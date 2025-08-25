@@ -162,3 +162,70 @@ Excess-n means 00..0 = -n
 	* Mantissa is normalised with an implicit leading bit 1
 		* $110.1_2$ -> normalised -> $1.101_2 * 2^2$ -> only 101 is stored in the mantissa field
 		* $0.00101101_2$ -> normalised -> $1.01101_2 * 2^{-3}$ -> only 01101 is stored in the mantissa field
+---
+# L4 Pointers
+## 1. Pointers
+### 1.1 Pointer variable
+* A variaible that contains the address of another variable
+* To declare a pointer variable:
+	syntax: type * pointername
+* Assigning value to a pointer: assign the address to a pointer
+* Accessing variable through pointer: indirection operation operator * 
+* Incrementing a pointer: the address inrease depends on the type of the variable,int 4 bytes, floar 4 bytes,char 1, double 8
+## 2. Functions
+* Pass-by-value and Scope Rule:
+---
+
+# L5 Collection of data
+## 1. Array
+* An homogeneous collection of data, occupt contiguous memory locations, and are accessed throufh indexing
+
+ ``
+ 	int a[3] = {1,2,3}
+ 	int b[] = {1,2,3}
+ 	int d[5] = {0}
+ ``
+### Array and pointers
+C sees array as constant pointer
+### Array oarameters in functions
+`` int sumArray(int [], int) `` 
+`` int sumArray(int *, int) `` 
+No need to put array size inside[]
+## 2. Strings
+* Array of chars with \0 as an end, We can turn any array of chars into a string by add a\0 at the end
+* Can use include <string .h> to manipulate
+`` char fruit_name[] ="apple"
+### Strings I/O
+```
+fgets(str, size, stdin); // reads size -1 char or until newline
+scanf("%s", str); // read until white space
+puts(str);
+pritnf("%s\n", str) 
+```
+* fgets()
+ON interactive input, fgets() also read in the newline character, Hence we may need to replace it with '\0', if necessary
+```
+fgets(stsr, size, stdin);
+len = strlen(str);
+if(str[len-1] == '\n')
+	STR[LEN -1] = '\0';
+```
+### String Functions
+* strlen
+* strcmp : positive if s1 is lexicographically
+* strncmp(s1, s2, n) first n chars
+* strcpy(s1, s2): copy s2 into s1
+* strncpy(s1, s2, n): copy first n chars of s2 to s1
+
+## 3. Structure
+Allow groupping of heterpgeneous members of different types
+```
+typedef struct {
+int length, width, height;
+} box_t;
+box_t box = {1,1,1};
+```
+* A type is not a variable, No memory is allocatd to a type
+* can do assignment woth structures : reslut1 = result2
+* shortcut: ``(*player_ptr).name  = player-ptr->name``
+* 
