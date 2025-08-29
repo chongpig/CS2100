@@ -228,4 +228,18 @@ box_t box = {1,1,1};
 * A type is not a variable, No memory is allocatd to a type
 * can do assignment woth structures : reslut1 = result2
 * shortcut: ``(*player_ptr).name  = player-ptr->name``
-* 
+---
+# L 7 MIPS
+## 1. Instruction Set Architecture
+### 1.1
+* An abstraction on the interface between the hardware and the low-level software:
+	Software -> to be translated to the instruction set
+	Hardware -> implment the instruction set
+* Include everything programmers need to know to make the machine code work correctly
+* Allows compter designers to talk about functions independently from the hardware
+* This abstraction allows many imolementations of varying cost and performance to run identical software
+### 1.2 MAchine code / Asse,bly language
+|Machine Code|Assembly Language|
+|binary|Human readable|
+|Also be wriiten in hexadecimal| May provide pseudo-instructions as syntatic sugar|
+
