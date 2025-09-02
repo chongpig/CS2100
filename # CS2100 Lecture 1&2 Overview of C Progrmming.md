@@ -239,8 +239,169 @@ box_t box = {1,1,1};
 * Include everything programmers need to know to make the machine code work correctly
 * Allows compter designers to talk about functions independently from the hardware
 * This abstraction allows many imolementations of varying cost and performance to run identical software
+
 ### 1.2 Machine code / Assembly language
 |Machine Code|Assembly Language|
 |binary|Human readable|
 |Also be wriiten in hexadecimal| May provide pseudo-instructions as syntatic sugar|
+### 1.3 The Components
+* The two major components in a computer 
+	1. Processor and memory
+		Processor: Perform computations
+		Memory: Storage of code and data
+		Bus: Bridge between the two components
+		* To Provie tempopaty storage for values in the processor, use registers in processors
+	2. Input/Output devices omitted in this example
+### 1.4 General purpose registers
+* Fast memories in the processor
+* Limited in number: 16-32 registers, compiler associates variables in progra,  with registers
+* Have no data type
+
+* There are 32 registers in MIPS assembly language, can be refered by a number($0, ...$31), or referred by a name
+C:\Users\Alienware\Desktop\registers
+### 1.5 MIPS assembly language
+* Each instruction excecutes a simple command
+* Each line of assembly code contains at most 1 instruction
+* (hex-sign) # is used for comments
+* General instruction syntax:
+* operation(op) destination source1 source2  :  add $s0, $s1, $s2
+* Immediate values are numerical constants: addi
+* The number zero , use $s0($0 or $zero)
+### 1.6 Logical operation
+Shift left : sll
+Shift right: srl
+Bitwise AND: and, andi
+Bitwise OR: or, ori
+Bitwise NOT: nor
+BitWIse XOR: xor
+
+* sll : shift left logical
+Move all the bits in a word to the left by a number of positions; fill the empted positions with zeros. Fill the emptied positions with zeroes
+
+* srl : shift right logical
+Move right and fills emptied positions with zeroes
+* The equaivalence of shifting left/right n bits : Multiply/divide by $2^n$, shifting is faster than multiplication/division
+
+* Bitwise AND :
+	Place 0s into the positions to be ignored -> bits will turn into 0s
+	Place 1s for interested positions -> bits will remain the same as the original
+
+* Bitwise OR:
+* Bitwise NOR: 
+	* There is no NOT instruction in MIPS to toggle the bits, However, a NOR instruction is provided, use NOR with zeroes(nor $t0, $t0, $zero)
+
+* Bitwise XOR(not equal operation)
+	can get NOT operationfrom XOR: xor $tom $t0, $t2
+	There is no NORI, but XORI instruction
+## 2 Memory organisation
+### 2.1 General Interview:
+* The main memory can ve viewed as a large, single-dimension array of memory locations
+* Each location of the memotu has an addres, which is an index into the array
+* The memory map on the right contains one byte(8 bits) in every location/address
+### 2.2 Transfer Unit
+* using distinvt memory address, we can access:
+	* a single byte
+	* a single word
+* Word is :
+	* Usually $2^n$ bytes
+	* The common unit of transfer between processor and memory
+	* Also commonly coincide with the register size, the integer size andinstruction size in most architectures
+### 2.3 Word Alignment
+* Words are aligned in memory if they begin at a byte address that is a multiple of the number of bytes in a word
+### 2.4 Memory Instructions
+* MIPS is a load-store register architecture
+	* 32 registers, each 32-bit(4 byte) long
+	* Each word contains 32 btis(4 bytes)
+	* Memory addresses are 32-bit long
+* In  MIPS, data must be in registers to perform arithmetic. Memory accessed only by data transfer instructionsMIPS uses byte addresses, so consecutive words differ by 4.
+
+* Memory Instruction: Load Word
+	eg. lw $t0, 4($s0)
+	steps:
+    1.Memory address = $s0 + 4 = 8000 + 4 = 8004
+	2. Memory woed at Mem[8004] is loaded into $t0
+* Memory Instruction: Store Word
+	e.g. sw $t0, 12($s0)
+	steps:
+    1.Memory address = $s0 + 12 = 8000 + 4 = 8012
+	2.Content of $t0 is stored into word at Mem[8012]
+* Load and Store Instructions
+	* Only load and store instructions can access data in memory.
+	* Remember that arithmetic operands(for add) are registers, not memory
+	* lb,sb, similar in working except that one byte, instead of one word, is loaded or stored
+* Others 
+	* MIPS disallows loading/storing unaligned word using lw/sw
+	* Pseudo-Instructions unaligned load word(ulw) and unaligned store word(usw) are provided for this purpose
+	* lh/sh : load halfword and store halfword
+	* lwl,lwr,swl,swr : load word left/right, store word left/right
+
+### 2.5 Common Questions: Address vs Value
+* A register can hold any 32-bit number:
+	The number has no implicit data type and is interpreted according to the instruction that uses it
+* Bytevs Word: IMPORTANT : Consecutive word addresses in machines with byte-addressing do not differ by 1.
+## 3. Making decisions
+### 3.1 Two types of decision-making statements in MIPS
+* Conditional(branch)
+	bne $t0,$t1, label
+	beq $t0,$t1, label
+* Unconditional(jump)
+	j label
+* A label is an anchor in the asssembly code to indicate point of interest, usually as branach target
+
+* Conditional Branch: beq and bne
+	* Processor follews the branch only when the conditions is satisfied
+	* beq $r1, $r2, L1
+		* Go to the statement labeled L1 if the value in register $r1 equals the value in register $r2
+		* beq is branch if equal
+	* bne $r1, $r2, L1
+		* Go to the statement labeled L1 if the value in register $r1does not  equal the value in register $r2
+		* bne is branch if not equal
+
+* Unconditional Jump: j
+	* Processor always follows the branch
+	* j L1
+		* Jump to label L1 unconditionally
+	
+* Translate if else to bne/beq
+f :s0, g: s1, h : s2, i :s3, j : s4
+```
+if (i == j)
+	f = g + h
+else 
+	f = g - h
+```
+```
+	bne $s3, $s4, Else
+	add $s0, $s1, $s2
+	j Exit
+Else : sub $s0, $s1, $s2
+Exit:
+```
+
+* Loops:
+i : s0, a: s2
+```
+for (i = 0; i<10 ; i++)
+	a = a + 5
+```
+```
+	add $s0, $zero, $zero
+	addi $s1, $zero, 10
+Loop: beq $s0, $s1, Exit
+	addi $s2, $s2, 5
+	addi $s0, $s0, 1
+	j Loop
+Exit:
+```
+### 3.2 Inequalities
+* set less than: slt
+	slt $t0, $s1, $s2
+	if(s1<s2) t0 = 1
+	else t0 = 0
+* to buile a "blt $s1, $s2,L" instruction:
+	slt $t0, $s1, $s2
+	bne $t0, $zero, L
+### Array and Loop
+e.g. Count the number of zeros in an array A
+
 
