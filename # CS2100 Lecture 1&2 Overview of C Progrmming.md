@@ -60,7 +60,7 @@ A basic C program has 4 main parts:
 	* Computation is through function
 	* A function body have two parts:
 		* Declaration statements:
-		* Executanble statements:
+		* Executable statements:
 * Output: stdout/file
 
 ## Control Structures in C
@@ -127,7 +127,7 @@ In C
 	 given number x ,$-x = 2^n -x$
 	 invert 0,1 then +1
 	 range : $-2^{n-1},2^{n-1}-1$
-## 9. 2s Complement on addition/Substraction
+## 9. 2s Complement on addition/Subtraction
 * Algorithm for addition of integers, A + B
 	1. Perform binary addition on the two numbers.
 	2. Ignore the carry out of the MSB
@@ -138,29 +138,30 @@ In C
 * Overflow:
 	positive + positive -> negative
 	negative + negative -> positive
-## 10. 1s Complement onn Addition/Substraction
+## 10. 1s Complement on Addition/Subtraction
 * Addition:
 	1. Perform binary addition
 	2. if there is a carry out of the MSB, add 1 to the result
-	3. Check for overflow. Overflow occurs if result is p[[psite sign of A and B.
-* Substraction:
-	1.Take B 1s complemenet
-	2.Add 1s complement of B to A
+	3. Check for overflow. Overflow occurs if result is opposite sign of A and B.
+* Subtraction:
+	1.Take B 1s complement
+	2.Add 1s complement of B to A  
 ## 11. Excess Representation
-It allows the range of values to be distributed evenly between the positive and negatice values, by a simple translation
+It allows the range of values to be distributed evenly between the positive and negative values, by a simple translation
 Excess-n means 00..0 = -n
+
 ## 12. Real Numbers
 1. Fixed-Point Representation: the number of bits allocated for the whole number part and fractional par are fixed
 2. Floating-Point Representation
-	allow us to represenet very large or very small numbers
-	3 compoments: sign, exponent and mantissa(fraction)
-	the base(radix) is assumedn to be 2
+	allow us to represent very large or very small numbers
+	3 components: sign, exponent and mantissa(fraction)
+	the base(radix) is assumed to be 2
 	Two formats:
 		Single-precision(32 bits): 1-bit sign, 8 bit exponent with bias -127(excess+127), 23 -bit mantissa
-		Double-precision(64 bits): 1-bit sign, 11 bit exponent with bias -1023(excess+1023), and 52 bit mantisssa
+		Double-precision(64 bits): 1-bit sign, 11 bit exponent with bias -1023(excess+1023), and 52 bit mantissa
 	* Sign bit : 0 for positive , 1 for negative
-	* Mantissa is normalised with an implicit leading bit 1
-		* $110.1_2$ -> normalised -> $1.101_2 * 2^2$ -> only 101 is stored in the mantissa field
+	* Mantissa is normalized with an implicit leading bit 1
+		* $110.1_2$ -> normalized -> $1.101_2 * 2^2$ -> only 101 is stored in the mantissa field
 		* $0.00101101_2$ -> normalised -> $1.01101_2 * 2^{-3}$ -> only 01101 is stored in the mantissa field
 ---
 # L4 Pointers
@@ -178,7 +179,7 @@ Excess-n means 00..0 = -n
 
 # L5 Collection of data
 ## 1. Array
-* An homogeneous collection of data, occupt contiguous memory locations, and are accessed throufh indexing
+* An homogeneous collection of data, occupy contiguous memory locations, and are accessed through indexing
 
  ``
  	int a[3] = {1,2,3}
@@ -238,7 +239,7 @@ box_t box = {1,1,1};
 * Include everything programmers need to know to make the machine code work correctly
 * Allows compter designers to talk about functions independently from the hardware
 * This abstraction allows many imolementations of varying cost and performance to run identical software
-### 1.2 MAchine code / Asse,bly language
+### 1.2 Machine code / Assembly language
 |Machine Code|Assembly Language|
 |binary|Human readable|
 |Also be wriiten in hexadecimal| May provide pseudo-instructions as syntatic sugar|
