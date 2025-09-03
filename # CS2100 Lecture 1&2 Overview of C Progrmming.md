@@ -404,4 +404,58 @@ Exit:
 ### Array and Loop
 e.g. Count the number of zeros in an array A
 
+# L9 MIPS Instruction Formats
+## 1. MIPS Encoding
+### 1.1 Baiscs: 
+* Each MIPS instruction has a fixed-length of 32 bits
+* The instruction encodings should be as regular as possible
+### 1.2 Classification
+* Instructions are classified according to their operands
+	R-format(register): arithmetics, shift
+	I-format(immediate)
+	J-format(Jump)
+### 1.3 MIPS Registers
+* For simplicity, register numbers($0,$1,....$31) will be used
+### 1.4 R-Format
+opcode rs rt rd shamt funct
+31<------------------------------>0
+rs rt rd(register numbers): 5bits
+shamt(shift amout)： 5bits
+opcode(instruction name)： 6 bits
+funct(combined with opcode exactly specifies the instruction) : 6 bits
 
+* opcode: 
+ 	partially specifies the instruction
+ 	Equal to 0 for all R-Format instructions
+* funct:
+	Combined with opcode exactly specifies the instruction
+* rs(Source Register):
+	Specify register containing first operand
+* rt(Target Register):
+ 	Specify register containing second operand
+* rd(Destination Register):
+	Specify register which will receive result of computation
+* shamt:
+	Amount a shift instruction will shift by
+	5 bits
+	Set to 0 in all non-shift instructions
+
+* for shift , rs is always 0
+
+### 1.5 I-format
+opcode rs rt immediate
+6           5  5   16 
+* opcode
+	opcode uniquely specifies an instruction
+* rs
+	specify the sourcr register operand(if anty)
+* rt
+	specifies register to receive result
+	note the difference from R-format instructions
+* immediate:
+	Treated as signed integer
+		Except for bitwise operations(ani,ori,xori)
+	16 bits -> can be used to represent a constant up to 2^16 different values
+	Large enough to handle:
+		The offseste in a typical lw or sw
+		Most of the values used in the addi, slti instructions
