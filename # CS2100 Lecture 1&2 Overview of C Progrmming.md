@@ -425,6 +425,7 @@ opcode(instruction name)： 6 bits
 funct(combined with opcode exactly specifies the instruction) : 6 bits
 
 * opcode: 
+
  	partially specifies the instruction
  	Equal to 0 for all R-Format instructions
 * funct:
@@ -432,6 +433,7 @@ funct(combined with opcode exactly specifies the instruction) : 6 bits
 * rs(Source Register):
 	Specify register containing first operand
 * rt(Target Register):
+
  	Specify register containing second operand
 * rd(Destination Register):
 	Specify register which will receive result of computation
@@ -457,5 +459,154 @@ opcode rs rt immediate
 		Except for bitwise operations(ani,ori,xori)
 	16 bits -> can be used to represent a constant up to 2^16 different values
 	Large enough to handle:
-		The offseste in a typical lw or sw
+		The offsets in a typical lw or sw
 		Most of the values used in the addi, slti instructions
+For beq , immediate == the lines jumped
+### 1.6 J-Format
+* For braches, PC-relative addressing was used:
+	Because we do not need to branch too far
+* For general jumps:
+	We may jump to anywhere in memory
+* The ideal case is to specify a 32-bit memory address to jump to
+	Unfortunately, we can't
+
+6 bits  26 bits
+opcode target
+
+* We canonly specify 26 bits of 32-bit address
+	Jump will only jump to word-aligned addresses, so last 2 bits are always 00
+	MIPS choose to take the 4 most significant bits from PC+4
+###  1.7 Addressing mode
+* Register addressing: operand is a register
+* Immediate addressing: operand is a constant within the instruction
+* Base addressing (displacement addresssing) : operand is at the memory location whise address is sum if a register and a constant in the instruction
+* PC-relative addressing: address is sum of PC and constant in the instruction
+* Pseudo-direct addressing : 26-bit o finstruction concatenated with upper 4-bits of PC
+
+# L10 The 5 Concepts in ISA Design
+## 1. RISC VS CISC: The Famous Battle
+* Two Major design philosophies fo ISA
+* Complex Instruction Set Computer(CISC)
+	eg. x86-32
+	Single instruction performs complex operation
+	Smaller progra, size as memory was premim
+	Complex implementation, no room for  hardware optimization
+* Reduced Instruction Set Computer(RISC)
+	e.g. MIPS, ARM
+	Keep the instruction set small and simple, makes it easier to build/optimise hardware
+	Burden on software to combine simpler operations to implement high-level language statements 
+## 2. The 5 Concepts in ISA Design
+### 2.1 Data Storage
+*  Storage Architecture
+*  General Purpose Register Architecture
+#### 2.1.1 Storage Architecture: Definition
+* von Neumann Achitecture
+	Data(operands) are stored in memory
+* For a processor, storage architecture concerns with:
+	Where do we store the operands so that the computation can be performed
+	Where do we store the compuptation result afterwards
+	How do we specify the operands
+* Major storage architectures
+	* Stack architecture:
+		* Operands are implicitly on top of the stack
+	* Accumulator architecture:
+		* One operand is implicitly in the accumulator(a special register)
+	* General-purpose register architecture:
+		* Only explicit operands
+		* Register-memory architecture(One operand in memory)	
+		* Register-register(or load-store) architecture
+	* Memory-memory architecture:
+		* All operands in memory.
+
+* example: Goal : C = A + B
+	1. Stack: Push A, Push B , add , Pop C 
+	2. Accumulator: Load A, Add B, Store C
+	3. Register(load-store) : Load R1 A, Load R2 B, Add R3 R1 R2, Store R3 C
+	4. Memory-Memory: Add C, A, B
+
+* For modern processors:
+	* General-Purpose-Register(GPR) is the most common choice for storage design
+	* RISC computers typically use Register-Register (Load/Store) design
+	* CISC computers use a mixture of Register-Register and Register-Memory
+### 2.2 Memory Address and Content
+* Given k-bit address, the address space is of size $2^k$
+* Each memory transfer consists of one word of n bits
+
+* Memory Content: Endianness
+	The relative ordering of the bytes in a multiple-byte word stored in memory
+	* Big-endian: MSB stored in lowest address
+	* Little-endian: LSB stored in lowest address
+* Addressing Modes
+	* Ways to specify an operand in an asssembly language
+* In  MIPS, there are onlu 3 addressing modes:
+	* Register
+		Operand is in a register
+	* Immediate
+		Operand is spercified in the instruction deirectly
+	* Displacement
+		Operand is in memory with address calculated as Base + Offset
+### 2.3 Operations in Instructions Set
+* Standard Operations in an Instruction Set
+* Frequently Used Instructions
+
+### 2.4 Instruction Formats
+* Instruction Length
+* Instsruction Fields
+	Type and Size of Operands
+	
+1. Instruction Length
+	* Variable-length instructions(CISC)
+		Intel 80 * 86, 1-17 bytes long
+		Digital VaAX 1-54 bytes long
+		require multi-step fetch and decode
+	* Fixed-length instructions(RISC)
+2. Instruction Fields
+	* An instruction consists of 
+		opcode
+		operands
+	* The operation designates the type and size of the operands
+		Typicla type and size: CHaracter(8 bits) half-word(16 ibts)
+		 word (32 bits) single precision floating point(1 word) double(2 words)
+	* Expectataions from any new 32-bit architecture:
+		Support for8- 16- and 32- bit integer and 32-bit and 64-bit floating point operations. A 64-bit architecture would need to support 64-bit integers as well.\
+		
+### 2.5 Encoding the Instruction Set
+* Issues: Code size, speed/performance, design complexity
+* Things to be decided:
+	* Number of registers
+	* Number of addressing modes
+	* Number of operands in an instruction
+* The different competing forces
+	* Have many resters and addressing modes
+	* Reduce code size
+	* Have instruction length that is easy to handle(fixed -length instructions are easier to handle)
+#### 3.5.1 Encoding Choices
+* Three encoding choices: variable, fixed, hybrid
+
+* Fixed length instruction
+	* Use expanding opcode scheme
+		No wasred bits and result in a larger instruction set
+
+# R2 
+* A general formula to compute the address:
+	a[i1][i2]...[in] is A0 + S * (((i1 * D2) + i2 ) * D3 + .... + in)
+* Unions 
+	* A special kind of struct where the fields occupy the same memory storage (or the max)
+* typedef
+	Introduces a user ddefined type
+```
+typedef struct {
+	int day, month, year;
+} date_t;
+
+typedef struct {
+	int cardNum;
+	date_t expiryDate;
+} card_t;
+
+```
+* enum
+	An enum  is a C type that represents a group of (integer) constants,i.e. cannot be changed
+	
+* Dynamic storage allocation
+	To allocate storage at runtime, use the malloc() system call
