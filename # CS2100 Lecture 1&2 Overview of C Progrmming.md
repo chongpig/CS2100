@@ -447,6 +447,7 @@ funct(combined with opcode exactly specifies the instruction) : 6 bits
 ### 1.5 I-format
 opcode rs rt immediate
 6           5  5   16 
+
 * opcode
 	opcode uniquely specifies an instruction
 * rs
