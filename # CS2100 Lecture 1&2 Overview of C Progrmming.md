@@ -425,6 +425,7 @@ opcode(instruction name)： 6 bits
 funct(combined with opcode exactly specifies the instruction) : 6 bits
 
 * opcode: 
+
  	partially specifies the instruction
  	Equal to 0 for all R-Format instructions
 * funct:
@@ -432,6 +433,7 @@ funct(combined with opcode exactly specifies the instruction) : 6 bits
 * rs(Source Register):
 	Specify register containing first operand
 * rt(Target Register):
+
  	Specify register containing second operand
 * rd(Destination Register):
 	Specify register which will receive result of computation
@@ -445,6 +447,7 @@ funct(combined with opcode exactly specifies the instruction) : 6 bits
 ### 1.5 I-format
 opcode rs rt immediate
 6           5  5   16 
+
 * opcode
 	opcode uniquely specifies an instruction
 * rs
@@ -457,5 +460,5 @@ opcode rs rt immediate
 		Except for bitwise operations(ani,ori,xori)
 	16 bits -> can be used to represent a constant up to 2^16 different values
 	Large enough to handle:
-		The offseste in a typical lw or sw
+		The offsets in a typical lw or sw
 		Most of the values used in the addi, slti instructions
