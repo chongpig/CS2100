@@ -461,7 +461,7 @@ opcode rs rt immediate
 	Large enough to handle:
 		The offsets in a typical lw or sw
 		Most of the values used in the addi, slti instructions
-For beq , immediate == the lines jumped
+	For beq , immediate == the lines jumped
 ### 1.6 J-Format
 * For braches, PC-relative addressing was used:
 	Because we do not need to branch too far
@@ -605,8 +605,84 @@ typedef struct {
 } card_t;
 
 ```
+
 * enum
 	An enum  is a C type that represents a group of (integer) constants,i.e. cannot be changed
 	
 * Dynamic storage allocation
 	To allocate storage at runtime, use the malloc() system call
+	
+#
+
+# L11 The Processor: Datapath
+## 1. Building a Processor: Datapath & Control
+* two major components for a processor
+	Datapath
+		Collection of components that process data
+		Performs the arithmetic, logical and memory operations
+	Control
+		tells the datapath, memoty and I/O devices what to do according to program instructions
+## 2. MIPS Processor: Implementation
+* Simplest possible implementation of a subset of the core MIPS ISA
+	Arithmetic and Logicak operations
+	Data transfer instructions
+	Branches
+## 3. Instruction Excecution Cycle(Basic)
+1. Fetch
+	Get instruction from memory
+	Address is in Program Counter(PC) Register
+2. Decode
+	Find out the operation required
+3. Operand Fetch
+	Get operands needed for operation
+4. Excute
+	Perform the required operation(ALU)
+5. Result Write
+	Store the result of the operation
+## 4. MIPS Instruction Execution
+1. Fetch: Read instr from [PC] 
+2. Decode.Operand Fetch 
+	add $rd, $rs, $rt: Read rs as opr1, rt as opr2
+	lw $rt, ofst($rs): Read rs as opr1, use ofst a ssopr2
+	beq $rs, $rt,ofst: Read rs as opr1, rt as opr2
+3. ALU
+4. Memory Access
+5. Result Write
+
+## 5. Build a MIPS Processor
+1. Stages
+	* Instruction Fetch stage
+		1. Use the Program Counter to fetch the instruction from memory
+		2. Increment the PC by 4 to get the address of the next instruction	
+		Output to the nextstage(Decode)
+			The instruction to be excecuted
+		* Instruction Memory
+			* Storage element for the instructions
+				* It is a sequential circuit
+				* Has an internal state that stores information
+				* Clock signal is assumed and not shown
+			* Supply instruction giiven the address
+				* Given instruction address M as input, the memory outputs the content at address M
+		* Adder:
+			* Combinational logic to implement the addition of two numbers
+			* Inputs: Two 32-bit numbers  A,B
+			* Output:Sum of the input numbers, A+B
+		* The idea of Clocking:
+			PC is read during the first half of the clock period and it is updated with PC+4 at the next rising clock edge
+	* Decode Stage: Requirements
+		* Gather data from the instruction fields:
+			1. Read the opcode to determine instruction type and field lengths
+			2. Read data from all necessary registers
+		* Input from previois stage(Fetch)
+			* Instruction to be excecuted
+		* Output tp the next stage(ALU)
+			Operation and the necessary operands
+		* Register File
+			* A collectio of 32 registers
+				* Each 32-bit wide; canve read/written by specifyin register number
+				* Read at most two registers per instrution
+				* Write at most noe register per instruction
+			* RegWrite is a control signal to indicate
+				* Writing of register
+				* 1(True) = write, 0 (False) = No Write
+			
