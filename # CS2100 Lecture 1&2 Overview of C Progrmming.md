@@ -612,6 +612,7 @@ typedef struct {
 * Dynamic storage allocation
 	To allocate storage at runtime, use the malloc() system call
 	
+
 #
 
 # L11 The Processor: Datapath
@@ -654,7 +655,7 @@ typedef struct {
 	* Instruction Fetch stage
 		1. Use the Program Counter to fetch the instruction from memory
 		2. Increment the PC by 4 to get the address of the next instruction	
-		Output to the nextstage(Decode)
+			Output to the nextstage(Decode)
 			The instruction to be excecuted
 		* Instruction Memory
 			* Storage element for the instructions
@@ -685,4 +686,52 @@ typedef struct {
 			* RegWrite is a control signal to indicate
 				* Writing of register
 				* 1(True) = write, 0 (False) = No Write
-			
+
+# L12 The Processor: Control
+## 1. Identified Control Signals
+* RegDst: Decode/Operand Fetch, Select the destinition register number
+* RegWrite: Decode/Operand Fetch RegWrite, Enable writing if register
+* ALUSrc: ALU, Select the $2^{nd}$ operand for ALU
+* ALUcontrol: ALU, Select the operation to be performed
+* MemRead/MemWrite: Memory, Enable reading/writing of data memory
+* MemToReg: regWrite: Select the result to be written back to register file
+* PCSrc: Memory/RegWrite, Select the next PC value
+## 2. Generating Control SIgnals: Idea
+* The control signals are generated based on the instruction to be executed
+	* Opcode -> Instruction Format
+	* Example:
+		* R-Format -> RegDst = 1
+	* R-Type instruction has additional information:
+		* the 6-bit "funct" field
+* Idea:
+	* Design a combinational circuit to generate these signals based on Opcode and possibly Function code
+		* A control unit is needed
+## 3. The Control Unit
+## 4. Control Signals
+## 5. ALU Control Signal
+* One Bit At A Time
+	* A simplified 1-bit MIPS ALU can be implemented as follows
+	* 4 controls bits are needed:
+		* Ainvert: 1 to invert input A
+		* Binvert: 1 to invert input B
+		* Operation(2-bit) : To select one of the 3 results
+* Multilevel Decoding:
+	* Brute Force approach:
+		* Use Opcode and Function Code directly, i.e. finding expressions with 12 variables
+	* Multilevel Decoding approach:
+		* Use some of the input to reduce the cases, then generate the full output
+		* Simplify the design process, reduce the size of the main controler, potentially speedup the circuit
+* Intermediate Signal : ALUop:
+* Basic Idea:
+	1. Use Opcode to generate a 2-bit ALUop signal 
+		* Represent classification of the instructions:
+		|Instruction type|ALUop|
+		|---|---|
+		|lw/sw|00|
+		|beq|01|
+		|R-type|10|
+	2. Use ALUop signal and Function Code field (For R-type instructions) to generate the 4-bit ALUcontrol signal
+		* ALUcontrol3 = 0
+		* ALUcontrol2 = ALUOp0 + ALUOp1& F1
+		* 
+## 6. Instruction Execution
