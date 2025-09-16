@@ -652,7 +652,7 @@ typedef struct {
 
 ## 5. Build a MIPS Processor
 1. Stages
-	* Instruction Fetch stage
+	1. Instruction Fetch stage
 		1. Use the Program Counter to fetch the instruction from memory
 		2. Increment the PC by 4 to get the address of the next instruction	
 			Output to the nextstage(Decode)
@@ -662,7 +662,7 @@ typedef struct {
 				* It is a sequential circuit
 				* Has an internal state that stores information
 				* Clock signal is assumed and not shown
-			* Supply instruction giiven the address
+			* Supply instruction given the address
 				* Given instruction address M as input, the memory outputs the content at address M
 		* Adder:
 			* Combinational logic to implement the addition of two numbers
@@ -670,7 +670,7 @@ typedef struct {
 			* Output:Sum of the input numbers, A+B
 		* The idea of Clocking:
 			PC is read during the first half of the clock period and it is updated with PC+4 at the next rising clock edge
-	* Decode Stage: Requirements
+	2. Decode Stage: Requirements
 		* Gather data from the instruction fields:
 			1. Read the opcode to determine instruction type and field lengths
 			2. Read data from all necessary registers
@@ -679,7 +679,7 @@ typedef struct {
 		* Output tp the next stage(ALU)
 			Operation and the necessary operands
 		* Register File
-			* A collectio of 32 registers
+			* A collection of 32 registers
 				* Each 32-bit wide; canve read/written by specifyin register number
 				* Read at most two registers per instrution
 				* Write at most noe register per instruction
@@ -735,3 +735,66 @@ typedef struct {
 		* ALUcontrol2 = ALUOp0 + ALUOp1& F1
 		* 
 ## 6. Instruction Execution
+	3. ALU Stage
+		* ALU = Arithmetic-Logic Unit
+		* Also called the Execution stage
+		* Perform the real worl for most instruction here
+			* Arithmetic, Shifting, Logical
+			* Memory operation: Address calculation
+			* Branch operation: Perform register comparison and targer address calculation
+		* Input from previous stage (Decode):
+			* Operation and Operands
+		* Output to the next stage (Memory):
+			* Caluculation result
+
+		* Arithmetic Logic Unit:
+			A(32bits)			isZero
+            B(32bits)			ALU result
+            ALUcontrol
+        	* Combinational logic to implement arithmetic and logical operations
+        	* Input
+        		Two 32 bit numbers
+        	* Control:
+        		4-bit to decide the particular operation
+        	* Outputs:
+        		Result of arithmetic/logical operation
+        		A 1-bti signal to indicate whether result is zero
+        * Branch Instructions:
+        	1. Branch outcome:
+        		* Use ALU to compare the register
+        		* The 1-bit "isZero" signal is enough to handle equal/not equal check 
+        	2. Branch Target Address:
+        		* Introduce additional logic to calculate the address
+        		* Need PC
+        		* Need Offset
+	4. Memory Stage:
+		* Instruction Memory Access Stge:
+			* Only the load and store instructions need to perform operation on this stage:
+				* Use memory address calculated by ALU Stage
+				* Read form or write to data memory
+			* All other instructions remain idle:
+				* Result from ALU Stage will pass through to be used in Register Write stage if applicable
+		* Input from previous stage (ALU):
+			* Computation result to be used as memory address
+		* Output to the next stage(Registser Write) :
+			* Result to be stored
+
+		* Data Memory:
+			* Storage element for the data of a program
+			* Inputs:
+				* Memory Address
+				* Data to be written (Write Data) for store instructions
+			* Control:
+				* Read and Write controls; only one can be asserteed at any pont of time
+			* Output:
+				* Data read from memory (Read Data) for load instructions
+	5. Register Write Stage:
+		* Instruction Register Write Stage:
+			* Most instructions write the result of some computation into a register
+				* e.g. arithmetic, logical,shifts,loads,set-less-than
+				* Need destination register number and computation result
+			* Exceptions are stores, branches,jumps:
+				* There are no results to be written
+				* These instructions remain idle in this stage
+			* Input from previous stage (Memory)
+				* Computation result either from memory or ALU
