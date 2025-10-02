@@ -500,7 +500,7 @@ opcode target
 *  Storage Architecture
 *  General Purpose Register Architecture
 #### 2.1.1 Storage Architecture: Definition
-* von Neumann Achitecture
+* von Neumann Architecture
 	Data(operands) are stored in memory
 * For a processor, storage architecture concerns with:
 	Where do we store the operands so that the computation can be performed
@@ -530,21 +530,32 @@ opcode target
 	* CISC computers use a mixture of Register-Register and Register-Memory
 ### 2.2 Memory Address and Content
 * Given k-bit address, the address space is of size $2^k$
+
 * Each memory transfer consists of one word of n bits
 
 * Memory Content: Endianness
 	The relative ordering of the bytes in a multiple-byte word stored in memory
 	* Big-endian: MSB stored in lowest address
 	* Little-endian: LSB stored in lowest address
+	
 * Addressing Modes
 	* Ways to specify an operand in an asssembly language
+	
 * In  MIPS, there are onlu 3 addressing modes:
 	* Register
 		Operand is in a register
+		
 	* Immediate
 		Operand is spercified in the instruction deirectly
+		
 	* Displacement
 		Operand is in memory with address calculated as Base + Offset
+		
+	* PC-relative addressing mode
+		caculate the address acording to PC
+	* Pesudo address
+	
+	  
 ### 2.3 Operations in Instructions Set
 * Standard Operations in an Instruction Set
 * Frequently Used Instructions
@@ -746,27 +757,27 @@ typedef struct {
 			* Operation and Operands
 		* Output to the next stage (Memory):
 			* Caluculation result
-
+	
 		* Arithmetic Logic Unit:
 			A(32bits)			isZero
-            B(32bits)			ALU result
-            ALUcontrol
-        	* Combinational logic to implement arithmetic and logical operations
-        	* Input
-        		Two 32 bit numbers
-        	* Control:
-        		4-bit to decide the particular operation
-        	* Outputs:
-        		Result of arithmetic/logical operation
-        		A 1-bti signal to indicate whether result is zero
-        * Branch Instructions:
-        	1. Branch outcome:
-        		* Use ALU to compare the register
-        		* The 1-bit "isZero" signal is enough to handle equal/not equal check 
-        	2. Branch Target Address:
-        		* Introduce additional logic to calculate the address
-        		* Need PC
-        		* Need Offset
+	        B(32bits)			ALU result
+	        ALUcontrol
+	    	* Combinational logic to implement arithmetic and logical operations
+	    	* Input
+	    		Two 32 bit numbers
+	    	* Control:
+	    		4-bit to decide the particular operation
+	    	* Outputs:
+	    		Result of arithmetic/logical operation
+	    		A 1-bti signal to indicate whether result is zero
+	    * Branch Instructions:
+	    	1. Branch outcome:
+	    		* Use ALU to compare the register
+	    		* The 1-bit "isZero" signal is enough to handle equal/not equal check 
+	    	2. Branch Target Address:
+	    		* Introduce additional logic to calculate the address
+	    		* Need PC
+	    		* Need Offset
 	4. Memory Stage:
 		* Instruction Memory Access Stge:
 			* Only the load and store instructions need to perform operation on this stage:
@@ -778,7 +789,7 @@ typedef struct {
 			* Computation result to be used as memory address
 		* Output to the next stage(Registser Write) :
 			* Result to be stored
-
+	
 		* Data Memory:
 			* Storage element for the data of a program
 			* Inputs:
