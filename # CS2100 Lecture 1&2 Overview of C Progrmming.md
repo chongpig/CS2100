@@ -746,7 +746,7 @@ typedef struct {
 		* ALUcontrol2 = ALUOp0 + ALUOp1& F1
 		* 
 ## 6. Instruction Execution
-	3. ALU Stage
+3. ALU Stage
 		* ALU = Arithmetic-Logic Unit
 		* Also called the Execution stage
 		* Perform the real worl for most instruction here
@@ -778,7 +778,7 @@ typedef struct {
 	    		* Introduce additional logic to calculate the address
 	    		* Need PC
 	    		* Need Offset
-	4. Memory Stage:
+4. Memory Stage:
 		* Instruction Memory Access Stge:
 			* Only the load and store instructions need to perform operation on this stage:
 				* Use memory address calculated by ALU Stage
@@ -809,3 +809,120 @@ typedef struct {
 				* These instructions remain idle in this stage
 			* Input from previous stage (Memory)
 				* Computation result either from memory or ALU
+
+# L13 Boolean Algebra
+## 1. Digital Circuits
+*  Two voltage levels
+	* High/true/1/asserted
+	* Low/false/0/deasserted
+* Advantages of digital circuits over analog circuits
+	*  More reliable (simpler circuits, less noise-prone )
+	*  Specified accuracy (determinable)
+	*  Abstraction can be applied using  simple mathematical model – Boolean Algebra
+	* Ease design, analysis and simplification of digital circuit – Digital Logic Design
+* Combinational: no memory, output depends solely on the input
+	* Gates
+	* Decoders, multiplexers
+	* Adders, multipliers
+*  Sequential: with memory, output depends on both input and current state
+	*  Counters, registers
+	* Memories
+	*
+## 2. Boolean Algebra
+* Boolean values
+	* True(T or 1)
+	* False(F or 0)
+* Connectives
+	* Conjuction (AND)
+		A* B ; A ^ B    *
+	* Disjunction (OR)
+	* Negation (NOT)
+* Truth Table
+	*  Provide a listing of every possible combination of inputs and its corresponding outputs.
+		* Inputs are usually listed in binary sequence.
+## 4. Precedence of the Operators
+* Precedence from highest to lowest
+	* Not
+	* And
+	* Or
+*  Use parenthesis to overwrite precedence.
+
+## Laws of Boolean Algebra
+Identity laws
+ A + 0 = 0 + A = A  ;  A * 1 = 1 * A = A
+ Inverse/complement laws
+ A + A' = A' + A = ;  A * A' = A' * A = 0
+ Commutative laws
+ A + B = B + A  ; A * B = B * A
+ Associative laws *
+ A + (B + C) = (A + B) + C ; A * (B * C) = (A * B) * C
+ Distributive laws
+ A * (B + C) = (A * B) + (A * C) ; A + (B * C) = (A + B) * (A + C)         *
+## 6. Duality
+* If the AND/OR operators and identity elements 0/1 in a Boolean equation are 
+interchanged, it remains valid.
+* Example:
+	* The dual equation of a+(b*c)=(a+b)*(a+c) is a*(b+c)=(a*b)+(a*c).
+* Duality gives free theorems – “two for the price of one”, as a Boolean equation 
+is logically equivalent to its dual. So, you prove one theorem and the other 
+comes for free!
+*  Examples:
+	* If (x+y+z)' = x'* y' * z' is valid, then its dual (x*y*z)' = x'+y'+z' is also valid. *
+	* If x+1 = 1 is valid, then its dual x*0 = 0 is also valid.
+
+## 7. Theorems
+* Idempotency
+	X + X = X ; X * X = X 
+* One element / Zero element
+	X + 1 = 1 + X =  1 ; X * 0 = 0 * X = 0
+* Involution
+	( X' )' = X
+* Absorption 1
+	X + X * Y = X ; X * (X + Y) = X
+* Absorption 2
+	X + X' * Y = X + Y ; X * (X' + Y) = X * Y
+* DeMorgans’ (can be generalised to more than 2 variables)
+	(X + Y)' = X' * Y' ; (X * Y)' = X' + Y'
+* Consensus
+	X * Y + X' * Z + Y * Z = X * Y + X' * Z (X+Y) * (X'+Z) * (Y+Z) = (X+Y) * (X'+Z)
+
+* Proving a theorem
+	* Theorems can be proved using truth table, or by algebraic manipulation using 
+	other theorems/laws. 
+	* By the principle of duality, we may also cite (without proof)
+ ) that X * (X+Y) = X.
+## 8. Boolean Functions
+*  Examples of Boolean functions (logic equations):
+	*   F1(x,y,z) = x * y * z' 
+		F2(x,y,z) = x + y' * z 
+		F3(x,y,z) = x' * y' * z + x' * y * z + x * y' 
+		F4(x,y,z) = x * y' + x' * z
+## 9.Complement Functions
+* Given a Boolean function F, the complement of F, denoted as F', is obtained by interchanging 1 with 0 in the function's output values
+* Example: F1 = x * y * z' 
+* What is F1' ?
+
+## 10. Standard Forms
+* Certain types of Boolean expressions lead to circuits that are desirable from 
+an implementation viewpoint.
+* Two standard forms:
+	* Sum-of-Products (SOP)
+	* Product-of-Sums (POS)
+* Literals
+	*  A Boolean variable on its own or in its complemented form
+	*  Examples: (1) x, (2) x', (3) y, (4) y' 
+* Product term
+	* A single literal or a logical product (AND) of several literals
+	* Examples: (1) x, (2) x * y * z', (3) A' * B, (4) A * B, (5) d * g' * v * w
+* Sum term
+	*A single literal or a logical sum (OR) of several literals
+* Examples: (1) x, (2) x+y+z', (3) A'+B, (4) A+B, (5) c+d+h'+j
+* Sum-of-Products (SOP) expression
+	* A product term or a logical sum (OR) of several product terms
+* Examples: (1) x, (2) x + yz', (3) xy' + x'yz, (4) AB + A'B', (5) A + B'C + AC' + CD 
+* Product-of-Sums (POS) expression
+	* A sum term or a logical product (AND) of several sum terms
+	*  Examples: (1) x, (2) x(y+z'), (3) (x+y')(x'+y+z), 
+		(4) (A+B) * (A'+B'), (5) (A+B+C) * D' * (B'+D+E') 
+*  Every Boolean expression can be expressed in SOP or POS form
+## 11. Minterms and Maxterms
