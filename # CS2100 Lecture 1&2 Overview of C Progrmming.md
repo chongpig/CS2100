@@ -760,24 +760,24 @@ typedef struct {
 	
 		* Arithmetic Logic Unit:
 			A(32bits)			isZero
-	        B(32bits)			ALU result
-	        ALUcontrol
-	    	* Combinational logic to implement arithmetic and logical operations
-	    	* Input
-	    		Two 32 bit numbers
-	    	* Control:
-	    		4-bit to decide the particular operation
-	    	* Outputs:
-	    		Result of arithmetic/logical operation
-	    		A 1-bti signal to indicate whether result is zero
-	    * Branch Instructions:
-	    	1. Branch outcome:
-	    		* Use ALU to compare the register
-	    		* The 1-bit "isZero" signal is enough to handle equal/not equal check 
-	    	2. Branch Target Address:
-	    		* Introduce additional logic to calculate the address
-	    		* Need PC
-	    		* Need Offset
+		    B(32bits)			ALU result
+		    ALUcontrol
+			* Combinational logic to implement arithmetic and logical operations
+			* Input
+				Two 32 bit numbers
+			* Control:
+				4-bit to decide the particular operation
+			* Outputs:
+				Result of arithmetic/logical operation
+				A 1-bti signal to indicate whether result is zero
+		* Branch Instructions:
+			1. Branch outcome:
+				* Use ALU to compare the register
+				* The 1-bit "isZero" signal is enough to handle equal/not equal check 
+			2. Branch Target Address:
+				* Introduce additional logic to calculate the address
+				* Need PC
+				* Need Offset
 4. Memory Stage:
 		* Instruction Memory Access Stge:
 			* Only the load and store instructions need to perform operation on this stage:
@@ -890,7 +890,7 @@ comes for free!
 	* Theorems can be proved using truth table, or by algebraic manipulation using 
 	other theorems/laws. 
 	* By the principle of duality, we may also cite (without proof)
- ) that X * (X+Y) = X.
+	 ) that X * (X+Y) = X.
 ## 8. Boolean Functions
 *  Examples of Boolean functions (logic equations):
 	*   F1(x,y,z) = x * y * z' 
@@ -925,4 +925,505 @@ an implementation viewpoint.
 	*  Examples: (1) x, (2) x(y+z'), (3) (x+y')(x'+y+z), 
 		(4) (A+B) * (A'+B'), (5) (A+B+C) * D' * (B'+D+E') 
 *  Every Boolean expression can be expressed in SOP or POS form
+
 ## 11. Minterms and Maxterms
+*  The minterms and maxterms on 2 variables are denoted by m0 to m3 and M0 
+to M3 respectively.
+* Important fact: Each minterm is the complement of its corresponding maxterm. Likwise, each maxterm is the complement of its corresponding minterm.
+* Example: m2 = x∙y' 
+m2' = ( x∙y' )' = x' + ( y' )' = x' + y = M2
+
+## 12. Canonical Forms
+* Canonical/normal form: a unique form of representation.
+	* Sum-of-minterms = Canonical sum-of-products
+	* Product-of-maxterms = Canonical product-of-sums
+### 12.1 Sum-of-Minterms
+* Given a truth table, example:
+* Obtain sum-of-minterms expression by gathering the minterms of the function (where output is 1).
+### 12.2 Product-of-Maxterms
+* Given a truth table, example:
+* Obtain product-of-maxterms expression by gathering the maxterms of the function (where output is 0).
+
+### 12.3 Conversion of Standaard Forms
+* We can convert between sum-of-minterms and product-of-maxterms easily
+	* Example: F2 = $\sum$m(1,4,5,6,7) = $\product$M(0,2,3)
+	* Why? See F2' in truth table.
+	* F2' = m0 + m2 + m3
+	Therefore,
+
+ 	F2 = (m0 + m2 + m3)' 
+ 	m0' ∙ m2' ∙ m3' (by DeMorgan’s)
+ 	M0 ∙ M2 ∙ M3   (as mx' = Mx)
+
+# L14 Logic Circuits
+## 1. Logic Gates
+![haha](./images/logicgates.png)
+* NAND = Negative OR
+* NOR = Negative AND
+![haha](./images/XOR.png)
+
+## 2. Logic Circuits
+*  Fan-in: the number of inputs of a gate.
+	* Gates may have fan-in more than 2.
+	* Example: a 3-input AND gate
+* Given a Boolean expression, we may implement it as a logic circuit.
+	* Example: F1 = x*y*z' (note the use of a 3-input AND gate) 
+## 3. Universal Gates
+* AND/OR/NOT gates are sufficient for building any Boolean function.
+	* We call the set {AND, OR, NOT} a complete set of logic.
+	* However, other gates are also used:
+		* Usefulness (eg: XOR gate for parity bit generation)
+		* Economical
+		* Self-sufficient (eg: NAND/NOR gates)
+### 3.1 Universal Gates: NAND Gate
+* {NAND} is a complete set of logic.
+	* Proof: Implement NOT/AND/OR using only NAND gates.
+	![](./images/NANDuni.png)
+### 3.2 Universal Gates: NOR Gate
+* {NOR} is a complete set of logic.
+	* Proof: Implement NOT/AND/OR using only NOR gates.
+	![](./images/NORuni.png)
+### 3.3 SOP and NAND Circuits (1/2)
+* An SOP expression can be easily implemented using
+	* 2-level AND-OR circuit
+	* 2-level NAND circuit
+* Example: F = A * B + C' * D + E
+	* Using 2-level AND-OR circuit
+	![](./images/NANDSOP.png)
+### 3.4 POS and NOR Circuits (1/2)
+* A POS expression can be easily implemented using
+	* 2-level OR-AND circuit
+	* 2-level NOR circuit
+* Example: G = (A+B) * (C'+D) * E
+	* Using 2-level OR-AND circuit
+	![](./images/NORPOS.png)
+## 4. Integrated Circuit (IC) Chip
+
+##  5. Programming Logic Array (PLA)
+* A programmable integrated circuit – implements  sum-of-products circuits (allow multiple outputs).
+* 2 stages
+	* AND gates = product terms
+	* OR gates = outputs
+* Connections between inputs and the planes can be ‘burned’.
+![](./images/PLAeg.png)
+![](./images/ControlSignals.png)
+* Simplified representation of previous PLA
+![](./images/SimRep.png)
+## 6. Read Only Memory (ROM)
+* Similar to PLA
+	* Set of inputs (called addresses)
+	* Set of outputs
+	* Programmable mapping between inputs and outputs
+* Fully decoded: able to implement any mapping.
+* In contrast, PLAs may not be able to implement a given mapping due to not having enough minterms.
+
+# L15 Simplification
+## 1. Function Simplification
+* Why simplify?
+	* Simpler expression leads to circuit that uses fewer logic gates.
+	* Thus cheaper, uses less power, (sometimes) faster.
+* Techniques
+	* Algebraic
+		* Using theorems
+		* Open-ended; requires skills
+	* Karnaugh Maps
+		* Easy to use
+		* Limited to no more than 6 variables
+	* Quine-McCluskey (non-examinable)
+		* Suitable for automation
+		* Can handle many variables (but computationally intensive)
+## 2. Algebraic Simplification
+* Aims to minimise
+	* Number of literals, and
+	* Number of terms
+* But sometimes conflicting, so let’s aim at reducing the number of literals for the examples in the next few slides.
+* Challenging – requires good algebraic manipulation skills.
+
+## 3. Half Adder
+* Half adder is a circuit that adds 2 single bits (X, Y) to produce a result of 2 bits (C, S).
+* The black-box representation and truth table for half adder are shown below.
+![](./images/HalfAdder.png)
+
+* In canonical form (sum-of-minterms):
+	* C = X∙Y
+	* S = X'∙Y + X∙Y' 
+* Output S can be simplified further (though no longer in SOP form):
+	* S = X'∙Y + X∙Y' = X $\oplus$ Y
+	* Implementation of a half adder
+## 4. Gray Code
+* Unweighted (not an arithmetic code)
+* Only a single bit change from one code value to the next.
+* Not restricted to decimal digits: n bits → 2n values.
+* Good for error detection.
+* Named after Frank Gray; also called reflected binary code.
+* Example: 4-bit standard Gray code
+![](./images/4bitsStandardGC)
+
+## 5. K-maps
+### 5.1 Introduction to K_maps
+* Systematic method to obtain simplified sum-of-products (SOP) expressions.
+* Objective: Fewest possible product terms and literals.
+* Diagrammatic technique based on a special form of Venn diagram.
+* Advantage: Easy to use.
+* Disadvantage: Limited to 5 or 6 variables.
+* Karnaugh-map (K-map) is an abstract form of Venn diagram, organised as a matrix of squares, where
+	* Each square represents a minterm
+	* Two adjacent squares represent minterms that differ by exactly one literal
+
+* two variable Kmap
+![](./images/2vKmap)
+* Alternative labelling
+![](./images/altLabel)
+
+* The K-map for a function is filled by putting
+	* A ‘1’ in the square the corresponds to a minterm of the function
+	* A ‘0’ otherwise
+* 3-Variable K-maps
+	* As there are 8 minterms for 3 variables, so there are 8 squares in a 3-variable K-map.
+	* Example: Let the variables be a, b, c.
+
+* There is wrap-around in the K-map:
+	* a'∙b'∙c' (m0) is adjacent to a'∙b∙c' (m2)
+	* a∙b'∙c' (m4) is adjacent to a∙b∙c' (m6)
+	![](./images/3vKmap.png)
+
+* 4-Variable K-maps
+![](./images/4vKmap.png)
+
+* 5-Variable K-maps
+	* K-maps of more than 4 variables are more difficult to use because the geometry (hypercube configurations) for combining adjacent squares becomes more involved.
+	* For 5 variables, e.g. v, w, x, y, z, we need $2^5$ = 32 squares.
+	* Each square has 5 neighbours
+	* Organised as two 4-variable K-maps. One for v' and the other for v.
+	* Corresponding squares of each map are adjacent.
+	* Can visualise this as one 4-variable K-map being on TOP of the other 4-variable K-map.
+	![](./images/5vKmap)
+
+* Larger K-maps
+	* 6-variable K-map is pushing the limit of human’s “pattern-recognition” capability.
+	* K-maps larger than 6 variables are practically unheard of!
+	* Normally, a 6-variable K-map is organised as four 4-variable K-maps, mirrored along two axes.
+### 5.2 How to use K-maps
+* Based on the Unifying Theorem (complement law):
+	* A + A' = 1
+* In a K-map, each cell containing a ‘1’ corresponds to a minterm of a given function F where the output is 1.
+* Each valid grouping of adjacent cells containing ‘1’ then corresponds to a simpler product term of F.
+	* A group must have size in powers of two: 1, 2, 4, 8, …
+	* Grouping 2 adjacent cells eliminates 1 variable from the product term; grouping 4 cells 
+	eliminates 2 variables; grouping 8 cells eliminates 3 variables, and so on. In general, 
+	grouping 2n cells eliminates n variables.
+	
+* Group as many cells as possible
+	* The larger the group, the fewer the number of literals in the resulting product term.
+* Select as few groups as possible to cover all the cells (minterms) of the function
+* The fewer the groups, the fewer is the number of product terms in the simplified SOP expression.
+
+* Each product term that corresponds to a group, w'∙x∙y' and w∙y, represents the 
+sum of minterms in that group.
+* Boolean expression is therefore the sum of product terms (SOP) that represent all groups of the minterms of the function:
+	F(w,x,y,z) = group A + group B = w'∙x∙y' + w∙y
+* The larger the group (the more minterms it contains), the fewer is the number of literals in the associated product term.
+### 5.3 Converting to Minterms Form
+* The K-map of a function can be easily filled in when the function is given in sum-of-minterms form.
+* What if it is not in sum-of-minterms form?
+	* Convert it into sum-of-products (SOP) form 33
+	* Expand the SOP expression into sum-of-minterms expression, or fill in the K-map directly based on the SOP expression.
+
+### 5.4 PIs and EPIs (1/3)
+* To find the simplest (minimal) SOP expression from a K-map, you need to obtain:
+	* Minimum number of literals per product term; and
+	* Minimum number of product terms.
+* Achieved through K-map using
+	* Bigger groupings of minterms (prime implicants) where possible; and
+	* No redundant groupings (look for essential prime implicants)
+	* Implicant: a product term that could be used to cover minterms of the function.
+
+* Prime implicant (PI): a product term obtained by combining the maximum 
+possible number of minterms from adjacent squares in the map.  (That is, it is 
+the biggest grouping possible.)
+*  Always look for prime implicants in a K-map.
+* No redundant groups:
+* Essential prime implicants
+* Essential prime implicant (EPI): a prime implicant that includes at least one minterm that is not covered by any other prime implicant.
+### 5.5 Finding Simplified SOP Expression
+* Algorithm
+	1. Circle all prime implicants on the K-map.
+	2. Identify and select all essential prime implicants for the cover.
+	3. Select a minimum subset of the remaining prime implicants to complete the cover, that is, to cover those minterms not covered by the essential prime implicants.
+### 5.6 Finding Simplified POS Expression
+* Simplified POS expression can be obtained by grouping the maxterms (i.e. 0s) of the given function.
+* Example:
+	* Given F = m(0,1,2,3,5,7,8,9,10,11), we first draw the K-map, then group the maxterms together:
+	![](./images/POSKmap.png)
+### 5.7 Don’t-Care Conditions (1/5)
+* In certain problems, some outputs are not specified or are invalid. Hence, these outputs can be either ‘1’ or ‘0’.
+* They are called don’t-care conditions, denoted by X (or d).
+* Example: A circuit takes in a 3-bit value ABC and outputs 2-bit value FG which is the sum of the input bits. It is also known that inputs 000 and 111 never occur.
+* Don’t-care conditions can be used to help simplify Boolean expression further in K-maps.
+* They could be chosen to be either 1’ or ‘0’, depending on which choice results in asimpler expression 
+* We usually use the notation $\sum$d to denote the set of don’t-care minterms. 
+# L16(empty)
+
+# L17 Combinational Circuits
+## 1. Introduction
+* Two classes of logic circuits
+	* Combinational
+	* Sequential
+* Combinational Circuit
+	* Each output depends entirely on the immediate (present) inputs.
+* Sequential Circuit
+	* Each output depends on both present inputs and state.
+
+##  2. Analysis Procedure
+* Given a combinational circuit, how do you analyze its function?
+* Steps:
+	1. Label the inputs and outputs.
+	2. Obtain the functions of A'+B' intermediate points and the outputs.
+
+ 	3. Draw the truth table.
+ 	4. Deduce the functionality of the circuit
+## 3. Design Methods
+* Different combinational circuit design methods:
+ 	* Gate-level design method (with logic gates)
+	* Block-level design method (with functional blocks)
+* Design methods make use of logic gates and useful function blocks
+	* These are available as Integrated Circuit (IC) chips.
+	* Types of IC chips (based on packing density): SSI, MSI, LSI, VLSI, ULSI.
+* Main objectives of circuit design:
+	* Reduce cost (number of gates for small circuits; number of IC packages for complex circuits)
+* Increase speed
+* Design simplicity (re-use blocks where possible)
+## 4. Gate-Level (SSI) Design: Half Adder (1/2)
+* Design procedure:
+	1. State problem 
+		* Example:  Build a Half Adder.
+	2. Determine and label the inputs and outputs of circuit.	
+		* Example: Two inputs and two outputs labelled, as shown below.
+	3. Draw the truth table.
+
+	4. Obtain simplified Boolean functions.
+
+ 		Example: C = X*Y
+ 		S = X' * Y + X * Y' = X * Y                                                           *
+ 	5. Draw the logic diagram.
+
+### 4.1 Full Adder
+* Gate-Level (SSI) Design: Full Adder
+	* Half adder adds up only two bits.
+	* To add two binary numbers, we need to add 3 bits (including the carry).
+	* Example:
+
+ 			1 1 1 carry
+ 			0 0 1 1 X
+ 		  + 0 1 1 1 Y
+ 			1 0 1 0 S
+* Need Full Adder (so called as it can be made from two half adders).
+![](./images/FullAdderSOP.png)
+
+*  Circuit for above formulae:
+	C = $X\codtY + (X\oplusY)\cdotZ$
+
+ 	S = $X\oplus(Y\oplusZ) = (X\oplusY)\oplusZ$ (XOR is associative)
+![](./images/HalfFullAdder.png)
+![](./images/HalfFullAdderBlock.png)
+
+### 4.2 Code Converters
+* Code converter – takes an input code, translates to its equivalent output code.
+* Example: BCD to Excess-3 code converter.
+	* Input: BCD code
+	* Output: Excess-3 code
+
+## 5. Block-Level Design
+* More complex circuits can also be built using block-level method.
+* In general, block-level design method (as opposed to gate-level design) relies on algorithms or formulae of the circuit, which are obtained by decomposing the main problem to sub-problems recursively (until small enough to be directly solved by blocks of circuits).
+* First example shows how to create a 4-bit parallel adder using block-level design.
+* Using 4-bit parallel adders as building blocks, we can create the following:
+	1. BCD-to-Excess-3 Code Converter
+
+ 	2. 16-bit Parallel Adder
+### 5.1 4-bit Parallel Adder
+* Consider a circuit to add two 4-bit numbers together and a carry-in, to produce a 5-bit result.
+	* SSI design (gate-level design) technique should not be used here.
+	* Truth table for 9 inputs is too big: 29 = 512 rows
+* Alternative design possible.
+	* Addition formula for each pair of bits (with carry in),
+	$C_{i+1}S_i = X_i + Y_i + C_i$                    _
+	has the same function as a full adder
+	* Cascading 4 full adders via their carries, we get:
+	![](./images/4bitAdder.png)
+	* Note that carry is propagated by cascading the carry from one full adder to the next.
+	* Called Parallel Adder because inputs are presented simultaneously (in parallel). Also called Ripple-Carry Adder
+
+### 5.2 BCD to Excess-3 Converter
+*  Use problem-specific formula:
+	Excess-3 code = BCD Code + $0011_2$
+	![](./BlockBCD.png)
+### 5.3 16-bit Parallel Adder
+* Larger parallel adders can be built from smaller ones.
+* Example: A 16-bit parallel adder can be constructed from four 4-bit parallel adders
+![](./image/16-bit parallel adder)
+
+## 6. Summary of Arithmetic Circuits
+
+##  7. Example: 6-Person Voting System
+* Application: 6-person voting system.
+	* Use FAs and a 4-bit parallel adder.
+	* Each FA can sum up to 3 votes.
+	![](./images/voter)
+
+## 8. Magnitude Comparator
+* Magnitude comparator: compares 2 unsigned values A and B, to check if A>B, A=B, or A<B.
+* To design an n-bit magnitude comparator using classical method, it would require $2^{2n}$ rows in truth table!
+* We shall exploit regularity in our design.
+* Question: How do we compare two 4-bit unsigned values A (a3a2a1a0) and B 
+(b3b2b1b0)?
+ If (a3 > b3) then A > B
+ If (a3 < b3) then A < B
+ If (a3 = b3) then if (a2 > b2) … 
+![](./images/Mcom.png)
+## 9. Circuit Delays
+* Given a logic gate with delay t. If inputs are stable at times t1, t2, …, tn, then the earliest time in which the output will be stable is:
+	max( t1, t2, …, tn ) + t
+* To calculate the delays of all outputs of a combinational circuit, repeat above 
+rule for all gates.
+
+
+* In general, an n-bit ripple-carry parallel adder will experience the following delay times:
+
+ 	$S_n = ( (n – 1)2 + 2 ) t$ 
+ 	$C_{n+1} = ( (n – 1)2 + 3 ) t$           _
+* Propagation delay of ripple-carry parallel adders is proportional to the number of bits it handles.
+ ▪ Maximum delay: ( (n – 1)2 + 3 ) t
+
+# L18 MSI Components
+## 1. Intro
+* An integrated circuit (referred to as an IC, a chip or a microchip) is a set of electronic circuits on one small flat piece (or ‘chip’) of semiconductor material.
+* Scale of integration: the number of components fitted into a standard size IC 
+![](./images/ICscale.png)
+
+* Four common and useful MSI circuits:
+	* Decoder
+	* Demultiplexer
+	* Encoder
+	* Multiplexer
+* Block diagrams of the above MSI circuits:
+![](./images/MSIBlock)
+## 2. Decoders
+### 2.1
+* Codes are frequently used to represent entities, eg: your name is a code to denote yourself (an entity!)
+* These codes can be identified (or decoded) using a decoder. Given a code, identify the entity.
+* Convert binary information from n input lines to (a maximum of) 2^n^ output lines. 
+* Known as n-to-m-line decoder, or simply n:m or n * m decoder (m <= 2n).
+* May be used to generate 2n minterms of n input variables
+
+* Example: If codes 00, 01, 10, 11 are used to identify four light bulbs, we may use a 2-bit decoder.
+* This is a 2 * 4 decoder which selects an output line based on the 2-bit code 
+supplied.
+* From truth table, circuit for 24 decoder is:
+![](./images/24Decoder)
+* In general, for an n-bit code, a decoder could select up to 2n lines:
+
+### 2.2 Implementing Functions
+* A Boolean function, in sum-of-minterms form 
+	* decoder to generate the minterms, and 
+	* an OR gate to form the sum.
+* Any combinational circuit with n inputs and m outputs can be implemented with an n:2n decoder with m OR gates.
+* Good when circuit has many outputs, and each function is 
+expressed with a few minterms.
+* e.g. FullAdder
+![](./images/FullAdderDecoders.png)
+### 2.3 Decoders with Enable
+* Decoders often come with an enable control signal, so that the device is only activated when the enable, E = 1.
+
+* In the previous slide, the decoder has a one-enable control signal, i.e. the decoder is enabled with E=1.
+* In most MSI decoders, enable signal is zero-enable, usually denoted by E' or Ē. The decoder is enabled when the signal is zero (low).
+
+### 2.4  Constructing Larger Decoders
+* Larger decoders can be constructed from smaller ones.
+* Example: A 3 * 8 decoder can be built from two 2 * 4 decoders (with one-enable) and an inverter
+
+![](./images/3824Decoder.png)
+
+### 2.5 Standard MSI Decoder
+* 74138 (3-to-8 decoder)
+![](./images/74138.png)
+* 74138 output is active low
+![](./images/74138Block.png)
+
+### 2.6 example
+* Example: Implement the following function using a 3 * 8 decoder and an appropriate logic gate
+	* f(Q,X,P) = $\sum$ m(0,1,4,6,7) = $\prod$ M(2,3,5)
+* We may implement the function in several ways:
+	* Using a decoder with active-high outputs with an OR gate:
+  		f(Q,X,P) = m0 + m1 + m4 + m6 + m7 
+   	* Using a decoder with active-low outputs with a NAND gate:
+  		f(Q,X,P) = (m0' *  m1' * m4' * m6' * m7'  )' 
+   	* Using a decoder with active-high outputs with a NOR gate:
+  		f(Q,X,P) = (m2 + m3 + m5 )'  = M2 * M3 * M5 
+  	* Using a decoder with active-low outputs with an AND gate:
+  		f(Q,X,P) = m2' * m3' * m5'
+## 3. Encoders
+* Truth table
+![](./images/EncoderKmap.png)
+
+* With K-map, we obtain:
+	* D0 = F1 + F3	
+	* D1 = F2 + F3
+
+### Eg. 8-to-3 encoder
+* At any one time, only one input line of an encoder has a value of 1 (high), the rest are zeroes (low).
+* To allow for more than one input line to carry a 1,we need priority encoder.
+![](./images/83Encoder.png)
+
+### Priority Encoder
+* A priority encoder is one with priority
+	* If two or more inputs or equal to 1, the input with the highest priority takes precedence.
+	* If all inputs are 0, this input combination is considered invalid.
+	* Example of a 4-to-2 priority encoder:
+
+![](./images/PriorityEncoder.png)
+
+## 4. Demultiplexer
+* Given an input line and a set of selection lines, a demultiplexer directs data from the input to one selected output line.
+* Example: 1-to-4 demultiplexer.
+* It turns out that the demultiplexer circuit is actually identical to a decoder with  enable.
+
+## 5. Multiplexer
+* A multiplexer is a device that has
+	* A number of input lines
+	* A number of selection lines
+	* One output line
+* It steers one of 2n inputs to a single output line, using n selection lines. Also known as a data selector.
+
+* Output of multiplexer is
+	“sum of the (product of data lines and selection lines)”
+* Example: Output of a 4-to-1 multiplexer is:
+	Y = I0∙(S1'∙S0') + I1∙(S1'∙S0) + I2∙(S1∙S0') + I3∙(S1∙S0)
+	
+* A 2n-to-1-line multiplexer, or simply 2n:1 MUX, is made from an n:2n decoder by adding to it 2n input lines, one to each AND gate.
+	A 4:1 multiplexer circuit:
+![](./images/DecoMulti.png)
+
+* Some IC packages have a few multiplexers in each package (chip). The 
+selection and enable inputs are common to all multiplexers within the 
+package.
+### Constructing Larger Multiplexers
+* Larger multiplexers can be constructed from smaller ones.
+* An 8-to-1 multiplexer can be constructed from smaller multiplexers like this (note placement of selector lines):
+![](./images/81MultA.png)
+### Standard MSI Multiplexer
+![](./images/74151A.png)
+
+###  Multiplexers: Implementing Functions
+* Boolean functions can be implemented using multiplexers.
+* A 2^n^-to-1 multiplexer can implement a Boolean function of n input variables, as follows:
+	1. Express in sum-of-minterms form. 
+		Example:
+ 		F(A,B,C) = A' * B' * C + A' * B * C + A * B' * C + A * B * C' = $\sum$ m(1,3,5,6)  
+	2. Connect n variables to the n selection lines.
+	3. Put a ‘1’ on a data line if it is a minterm of the function, or ‘0’ otherwise.
+
+### Using Smaller Multiplexers
+* Earlier, we saw how a 2n-to-1 multiplexer can be used to implement a Boolean function of n (input) variables.
+* However, we can use a singlesmaller 2(n-1)-to-1 multiplexer to implement a Boolean function of n (input) variables.
+* Example: The function F(A,B,C) = $\sum$ m(1,3,5,6) can be implemented using a 4-to-1 multiplexer (rather than an 8-to-1 multiplexer).
